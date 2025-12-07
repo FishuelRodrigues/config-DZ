@@ -1,0 +1,149 @@
+Пример 1: Конфигурация сервера
+Входной файл (server.conf):
+
+
+# Объявление констант
+set port = 8080
+set host = "localhost"
+set timeout = 300
+
+# Основная конфигурация
+table([
+    server_name = "api_server",
+    max_connections = 1000,
+    enabled_features = #{ "ssl", "compression", "caching" },
+    connection_settings = table([
+        keep_alive = true,
+        buffer_size = 8192,
+        timeout = @{timeout + 100}  # Константное выражение
+    ])
+])
+Запуск конвертера:
+
+
+python config_converter.py server.conf server.xml
+Фрагмент выходного XML (server.xml):
+
+xml
+<?xml version="1.0" ?>
+<config>
+  <dict>
+    <pair>
+      <key>server_name</key>
+      <value>
+        <string>api_server</string>
+      </value>
+    </pair>
+    <pair>
+      <key>max_connections</key>
+      <value>
+        <number>1000</number>
+      </value>
+    </pair>
+    <!-- ... остальные элементы ... -->
+    <pair>
+      <key>connection_settings</key>
+      <value>
+        <dict>
+          <pair>
+            <key>timeout</key>
+            <value>
+              <number>400</number>  <!-- Вычисленное значение timeout + 100 -->
+            </value>
+          </pair>
+        </dict>
+      </value>
+    </pair>
+  </dict>
+</config>
+Пример 2: Использование функций
+Входной файл (functions.conf):
+
+
+set a = 17
+set b = 5
+
+table([
+    # Использование функции mod()
+    remainder = @{mod(a, b)},
+    
+    # Использование функции print()
+    message = @{print("Result: ")}
+])
+Запуск и результат:
+
+
+python config_converter.py functions.conf functions.xml
+Выходной XML будет содержать:
+
+xml
+<number>2</number>  <!-- Остаток от деления 17 на 5 -->
+<string>Result: </string>  <!-- Результат функции print() -->
+Пример 3: Обработка ошибок
+Входной файл с ошибкой (error.conf):
+
+
+set x = 10
+set y = 0
+
+# Ошибка: деление на ноль
+table([result = @{mod(x, y)}])
+Запуск с ошибкой:
+
+
+python config_converter.py error.conf error.xml
+Вывод программы:
+
+
+Ошибка синтаксиса: Деление на ноль в функции mod() на строке 5
+Пример 4: Массивы и вложенные структуры
+Входной файл (complex.conf):
+
+
+table([
+    users = #{
+        table([name = "Alice", age = 25]),
+        table([name = "Bob", age = 30]),
+        table([name = "Charlie", age = 35])
+    },
+    settings = table([
+        features = #{ "auto_save", "notifications", "backup" },
+        limits = table([
+            max_file_size = 1048576,
+            max_users = 100
+        ])
+    ])
+])
+Пример 5: Интерактивное использование
+
+# Показать справку
+python config_converter.py --help
+
+# Запустить все тесты
+python config_converter.py --test
+
+# Показать пример 2 (конфигурация игры)
+python config_converter.py --example 2
+
+# Конвертировать файл и вывести результат в консоль
+python config_converter.py input.conf | head -20
+Пример 6: Интеграция в скрипты
+
+#!/usr/bin/env python3
+# Пример использования как модуля
+
+from config_converter import ConfigConverter
+
+# Чтение конфигурации из строки
+config_text = '''
+set api_key = "abc123"
+table([enabled = true, retries = 3])
+'''
+
+# Конвертация
+converter = ConfigConverter()
+xml_result = converter.convert(config_text)
+
+# Использование результата
+print("Конвертация успешна!")
+print(f"Длина XML: {len(xml_result)} символов")
