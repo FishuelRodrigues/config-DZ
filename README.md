@@ -30,13 +30,13 @@
 Операции и функции: сложение (+), print(), mod()
 
 3. Использование
-# Конвертация файла
+ Конвертация файла
 python config_converter.py input.conf output.xml
 
-# Запуск тестов
+ Запуск тестов
 python config_converter.py --test
 
-# Просмотр примеров
+ Просмотр примеров
 python config_converter.py --example 1
 4. Примеры конфигураций
 В коде представлены 3 примера конфигураций из разных предметных областей:
@@ -210,28 +210,28 @@ Python 3.6 или новее
 Установка и запуск:
 Вариант 1: Прямой запуск
 
-# Клонирование или копирование проекта
+ Клонирование или копирование проекта
 git clone <репозиторий>
 cd config-converter
 
-# Запуск конвертера
+ Запуск конвертера
 python config_converter.py input.conf output.xml
 
 Вариант 2: Запуск с аргументами
 
-# Показать справку
+ Показать справку
 python config_converter.py --help
 
-# Запустить тесты
+ Запустить тесты
 python config_converter.py --test
 
-# Показать пример конфигурации
+ Показать пример конфигурации
 python config_converter.py --example 1
 
 Вариант 3: Запуск тестов через unittest
 
-# Запуск всех тестов
+ Запуск всех тестов
 python -m unittest config_converter.TestConfigConverter
 
-# Запуск конкретного теста
+ Запуск конкретного теста
 python -m unittest config_converter.TestConfigConverter.test_lexer_basic
